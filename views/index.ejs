@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><%=title%></title>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='icon' href='favicon.ico' type="image/x-icon" />
+  </head>
+  <body>
+    <div id="page-wrap">
+
+		<header id="h1" text-align="center">
+			··· <%=title%> ···
+		</header>
+		<br>
+		<br>
+		<% if(status===0) { %>
+		<a onclick="javacript:window.location.reload()" class="redButton">Off</a>
+		<% } else { %>
+		<a onclick="javacript:window.location.reload()" class="greenButton">On</a>
+		<% } %>
+
+		<br>
+		<br>
+		<br>
+		<footer id="f1" >
+			Aaron Planell
+			<br>
+			<a href="mailto:aaronplanell@gmail.com">aaronplanell@gmail.com</a>
+			<br>
+			<a href="https://github.com/aaronplanell">https://github.com/aaronplanell</a>
+		</footer>
+    </div>
+  </body>
+</html>
