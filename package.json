@@ -1,5 +1,5 @@
 {
-  "name": "express-pi-onoff",
+  "name": "express-pi-controller",
   "version": "0.0.0",
   "private": true,
   "scripts": {

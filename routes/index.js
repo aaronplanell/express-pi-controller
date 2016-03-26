@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 	status = led.readSync();
 	console.log('New status: ' + status);
 
-	res.render('index', { title: 'Express / Raspberry Pi / OnOff', status: status });
+	res.render('index', { title: 'Express / Raspberry Pi / Controller', status: status });
 });
 
 module.exports = router;
