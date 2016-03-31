@@ -5,8 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//Routes & Controller
 var routes = require('./routes/index');
+var controller = require('./controllers/controller');
 
+//The express app
 var app = express();
 
 // view engine setup
@@ -54,43 +57,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-
-/*
- * Control the button & light for the status of the app
- ***/
-var nLedA = 18;
-var nButton = 22;
-var GPIO = require('onoff').Gpio;
-var gLedA = new GPIO(nLedA, 'out');
-var gButton = new GPIO(nButton, 'in', 'both');
-
-//Default: switch on
-gLedA.writeSync(0); 
-global.bSwitchOnOff = true;
- 
-// define the callback function
-function light(err, state) {
-	if(state == 0) {
-		if (bSwitchOnOff === false) {
-			bSwitchOnOff = true;
-			gLedA.writeSync(0);
-			console.log("The led " + nLedA + " is active.");
-		} 
-		else {
-			bSwitchOnOff = false;
-			gLedA.writeSync(1);
-			console.log("The led " + nLedA + " is not active.");
-		};
-	};
-};
- 
-// pass the callback function to the
-// as the first argument to watch()
-gButton.watch(light);
-
-//Exports the status of the button
-module.exports = bSwitchOnOff;
-
+//Control the button & light for the status of the app
+controller.loadButton();
 
 //Export application
 module.exports = app;
