@@ -2,86 +2,103 @@
 	{
 		"id":		0,
 		"name":		"BCM 0",
+		"type":		"undefined",
 		"enabled":	false
 	}, 
 	{
 		"id":		1,
 		"name":		"BCM 1",
+		"type":		"undefined",
 		"enabled":	false
 	}, 
 	{
 		"id":		4,
 		"name":		"BCM 4",
+		"type":		"undefined",
 		"enabled":	false
 	}, 
 	{
 		"id":		7,
 		"name":		"BCM 7",
+		"type":		"undefined",
 		"enabled":	false
 	}, 
 	{
 		"id":		8,
 		"name":		"BCM 8",
+		"type":		"undefined",
 		"enabled":	false
 	}, 
 	{
 		"id":		9,
 		"name":		"BCM 9",
+		"type":		"undefined",
 		"enabled":	false
 	}, 
 	{
 		"id":		10, 
 		"name":		"BCM 10",
+		"type":		"undefined",
 		"enabled":	false
 	},
 		{
 		"id":		11, 
 		"name":		"BCM 11",
+		"type":		"undefined",
 		"enabled":	false
 	},
 	{
 		"id":		14, 
 		"name":		"BCM 14",
+		"type":		"undefined",
 		"enabled":	false
 	},
-		{
+	{
 		"id":		15, 
 		"name":		"BCM 15",
+		"type":		"undefined",
 		"enabled":	false
 	},
-		{
+	{
 		"id":		17, 
 		"name":		"BCM 17",
-		"enabled":	false
-	},
-		{
-		"id":		18, 
-		"name":		"BCM 18",
+		"type":		"led",
 		"enabled":	true
 	},
-		{
+	{
+		"id":		18, 
+		"name":		"BCM 18",
+		"type":		"undefined",
+		"enabled":	false
+	},
+	{
 		"id":		21, 
 		"name":		"BCM 21",
+		"type":		"undefined",
 		"enabled":	false
 	},
-		{
+	{
 		"id":		22, 
 		"name":		"BCM 22",
+		"type":		"undefined",
 		"enabled":	false
 	},
-		{
+	{
 		"id":		23, 
 		"name":		"BCM 23",
+		"type":		"undefined",
 		"enabled":	false
 	},
-		{
+	{
 		"id":		24, 
 		"name":		"BCM 24  - Don't use (reserved for the status led)",
+		"type":		"status_led",
 		"enabled":	false
 	},
 		{
 		"id":		25,
 		"name":		"BCM 25 - Don't use (reserved for the button)",
+		"type":		"button",
 		"enabled":	false
 	}
 ]

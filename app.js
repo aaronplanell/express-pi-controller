@@ -57,7 +57,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-//Control the button & light for the status of the app
+//Control the button & status led for the status of the app
 controller.loadButton();
 
 //Export application

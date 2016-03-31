@@ -14,11 +14,11 @@
 		</header>
 		<br>
 		<br>
-		<% if(bSwitchOnOff===true) { %>
+		<% if(sStatusLed===true) { %>
 			<% if(status===0) { %>
-			<a onclick="javacript:window.location.reload()" class="redButton">Off</a>
+			<a onclick="javacript:window.location.reload()" class="redButton">Off <%=ledId%></a>
 			<% } else { %>
-			<a onclick="javacript:window.location.reload()" class="greenButton">On</a>
+			<a onclick="javacript:window.location.reload()" class="greenButton">On <%=ledId%></a>
 			<% } %>
 		<% } else { %>
 			Sorry, but currently the button is switched off 
