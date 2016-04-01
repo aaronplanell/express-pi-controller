@@ -68,8 +68,8 @@
 	{
 		"id":		18, 
 		"name":		"BCM 18",
-		"type":		"undefined",
-		"enabled":	false
+		"type":		"led",
+		"enabled":	true
 	},
 	{
 		"id":		21, 

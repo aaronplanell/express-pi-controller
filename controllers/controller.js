@@ -72,8 +72,8 @@ var setButton = function () {
  ***/
 
 var sStatusLed = false;
-var nMainLed = 17;
-var gMainLed = new GPIO(nMainLed, 'out');
+var item = 17;
+var gMainLed = new GPIO(item, 'out');
 var sMainLed = 0;
 
 
@@ -118,56 +118,76 @@ exports.loadButton = function () {
 
 
 /*
- * Controls the main led
+ * Controls the main item
  ***/
 
-//Switch the led
-var doChange = function (nMainLed) {
+//Set the value of the item
+var value = function (item, new_status) {
 
-	if (!isEnabled(nMainLed)) {
-		console.log(colors.bgRed("Warning: The led " + nMainLed + " is not enabled. Someone is trying to hack us!"));
-		return;
+	if (!isEnabled(item)) {
+		console.log(colors.bgRed("Warning: The led " + item + " is not enabled. Someone is trying to hack us!"));
+		return (false);
 	};		
 
 	if (!sStatusLed) {
-		console.log(colors.bgYellow("Warning: Cannot change the led " + nMainLed + ". Press first the button."));
-		return;
+		console.log(colors.bgYellow("Warning: Cannot on/off the led " + item + ". Press first the button."));
+		return (false);
 	};
 		
-	// Led is attached to pin nMainLed
+	// Led is attached to pin item
+	sMainLed = gMainLed.readSync();
+	gMainLed.writeSync(new_status);
+	console.log(colors.grey("The item " + item + " has this value: " + parseInt(new_status)));
+
 	sMainLed = gMainLed.readSync();
 
-	if (sMainLed === 0) {
-		gMainLed.writeSync(1);
-		console.log(colors.grey("The led " + nMainLed + " is not active."));
-	} else {
-		gMainLed.writeSync(0);
-		console.log(colors.red("The led " + nMainLed + " is active."));
-	}
-	sMainLed = gMainLed.readSync();
+	return(true);
 };
 
 
-//Render de page
+/*
+ * Renders
+ ***/
+
+//Render the page
 var renderMainPage = function (req, res, next) {
-	res.render('index', { title: 'Express / Raspberry Pi / Controller', sStatusLed: sStatusLed, status: sMainLed, ledId: nMainLed });
+	res.render('index', { title: 'Express / Raspberry Pi / Controller', sStatusLed: sStatusLed, status: sMainLed, ledId: item });
 };
-
 
 //Switch the led & Render de page
 exports.index = function (req, res, next) {
-	doChange(nMainLed);
+	var item = 17;
+	var result = value(item, Math.abs(1-sMainLed));
 	renderMainPage(req, res, next);
 };
 
-exports.changeLed = function (req, res, next) {
-	doChange(req.params.ledId);
+//Return the active items
+exports.enabled = function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(bcms.filter(function(item) { return (item.type === "led" && item.enabled === true) })));	
+    res.send(JSON.stringify(bcms.filter(function(item) { return (item.type === req.params.type && item.enabled === true) })));	
 };
 
-//Return the active leds
-exports.leds = function (req, res, next) {
+//Return one item
+exports.item = function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(bcms.filter(function(item) { return (item.type === "led" && item.enabled === true) })));	
+    res.send(JSON.stringify(bcms.filter(function(item) { return (item.type === req.params.type && item.id === parseInt(req.params.item) && item.enabled === true) })));	
 };
+
+//Switch on one item
+exports.on = function (req, res, next) {
+	var result = value(parseInt(req.params.item), 0);
+	res.send(JSON.stringify(result));
+};
+
+//Switch off one item
+exports.off = function (req, res, next) {
+	var result = value(parseInt(req.params.item), 1);
+	res.send(JSON.stringify(result));
+};
+
+//Switch the item
+exports.switch = function (req, res, next) {
+	var result = value(parseInt(req.params.item), Math.abs(1-sMainLed));
+	res.send(JSON.stringify(result));
+};
+
