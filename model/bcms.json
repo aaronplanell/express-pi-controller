@@ -3,103 +3,137 @@
 		"id":		0,
 		"name":		"BCM 0",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	}, 
 	{
 		"id":		1,
 		"name":		"BCM 1",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	}, 
 	{
 		"id":		4,
 		"name":		"BCM 4",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	}, 
 	{
 		"id":		7,
 		"name":		"BCM 7",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	}, 
 	{
 		"id":		8,
 		"name":		"BCM 8",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	}, 
 	{
 		"id":		9,
 		"name":		"BCM 9",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	}, 
 	{
 		"id":		10, 
 		"name":		"BCM 10",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	},
 		{
 		"id":		11, 
 		"name":		"BCM 11",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	},
 	{
 		"id":		14, 
 		"name":		"BCM 14",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	},
 	{
 		"id":		15, 
 		"name":		"BCM 15",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	},
 	{
 		"id":		17, 
 		"name":		"BCM 17",
 		"type":		"led",
-		"enabled":	true
+		"enabled":	true,
+		"status":	1,
+		"GPIO":		null
 	},
 	{
 		"id":		18, 
 		"name":		"BCM 18",
 		"type":		"led",
-		"enabled":	true
+		"enabled":	true,
+		"status":	1,
+		"GPIO":		null
 	},
 	{
 		"id":		21, 
 		"name":		"BCM 21",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	},
 	{
 		"id":		22, 
 		"name":		"BCM 22",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	},
 	{
 		"id":		23, 
 		"name":		"BCM 23",
 		"type":		"undefined",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	},
 	{
 		"id":		24, 
 		"name":		"BCM 24  - Don't use (reserved for the status led)",
 		"type":		"status_led",
-		"enabled":	false
+		"enabled":	false,
+		"status":	0,
+		"GPIO":		null
 	},
-		{
+	{
 		"id":		25,
 		"name":		"BCM 25 - Don't use (reserved for the button)",
 		"type":		"button",
-		"enabled":	false
+		"enabled":	false,
+		"status":	1,
+		"GPIO":		null
 	}
 ]
 	

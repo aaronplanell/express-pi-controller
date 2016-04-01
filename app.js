@@ -57,8 +57,11 @@ app.use(function(err, req, res, next) {
   });
 });
 
-//Control the button & status led for the status of the app
+/*
+ * The controller
+ ***/
 controller.loadButton();
+controller.loadGPIO();
 
 //Export application
 module.exports = app;

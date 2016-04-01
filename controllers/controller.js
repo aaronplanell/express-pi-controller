@@ -8,13 +8,14 @@ var bcms = require('../model/bcms.json');
  * Prepare de Leds/Button
  * - Status Led: Indicates if all the process is active.
  * - Button: On/Off the process
- * - Main Led: 17
+ * - Main Led: 
  * The button controls the status of the Status Led
  ***/
 
 var GPIO = require('onoff').Gpio
 var nStatusLed;
 var gStatusLed;
+var sStatusLed;
 var nButton;
 var gButton;
 
@@ -65,17 +66,6 @@ var setButton = function () {
 };
 
 
-/*
- * Default values:
- * - sStatusLed: Controls the status of the Status Led. Active.
- * - sMainLed: Controls the main led. Unactive.
- ***/
-
-var sStatusLed = false;
-var item = 17;
-var gMainLed = new GPIO(item, 'out');
-var sMainLed = 0;
-
 
 /*
  * Controls the button & light for the status of the app
@@ -120,6 +110,27 @@ exports.loadButton = function () {
 /*
  * Controls the main item
  ***/
+exports.loadGPIO = function () {
+	for (i=0; i<bcms.length; i++) {
+		if (bcms[i].enabled === true) {
+			var item = parseInt(bcms[i].id);
+			bcms[i].GPIO = new GPIO(item, 'out');
+
+			//Load the default values
+			bcms[i].GPIO.writeSync(bcms[i].status);
+		}
+	}
+}
+
+var getGpio = function(item) {
+	for (i=0; i<bcms.length; i++) {
+		if (item === parseInt(bcms[i].id)) {
+			return(bcms[i]);
+		}
+	}
+
+	return(null);
+}
 
 //Set the value of the item
 var value = function (item, new_status) {
@@ -135,11 +146,14 @@ var value = function (item, new_status) {
 	};
 		
 	// Led is attached to pin item
-	sMainLed = gMainLed.readSync();
-	gMainLed.writeSync(new_status);
-	console.log(colors.grey("The item " + item + " has this value: " + parseInt(new_status)));
-
-	sMainLed = gMainLed.readSync();
+	var bcm = getGpio(item);
+	if (bcm !== null) {
+		bcm.GPIO.writeSync(new_status);
+		bcm.status = bcm.GPIO.readSync();
+		console.log(colors.grey("The item " + item + " has this value: " + parseInt(new_status)));
+	} else {
+		console.log(colors.bgRed("Warning: The led " + item + " is not loaded. Someone is trying to hack us!"));
+	}
 
 	return(true);
 };
@@ -149,16 +163,17 @@ var value = function (item, new_status) {
  * Renders
  ***/
 
-//Render the page
-var renderMainPage = function (req, res, next) {
-	res.render('index', { title: 'Express / Raspberry Pi / Controller', sStatusLed: sStatusLed, status: sMainLed, ledId: item });
-};
-
-//Switch the led & Render de page
+//Switch the led & Render de main page
 exports.index = function (req, res, next) {
-	var item = 17;
-	var result = value(item, Math.abs(1-sMainLed));
-	renderMainPage(req, res, next);
+	var result = false;
+	var item = 18;
+	var bcm = getGpio(parseInt(item));
+	if( bcm!== null) {	
+		var result = value(item, Math.abs(1-bcm.status));
+		res.render('index', { title: 'Express / Raspberry Pi / Controller', sStatusLed: sStatusLed, status: bcm.status, ledId: bcm.id });
+	} else {
+		res.send(JSON.stringify(result));
+	}
 };
 
 //Return the active items
@@ -187,7 +202,11 @@ exports.off = function (req, res, next) {
 
 //Switch the item
 exports.switch = function (req, res, next) {
-	var result = value(parseInt(req.params.item), Math.abs(1-sMainLed));
+	var result = false;
+	var bcm = getGpio(parseInt(req.params.item));
+	if( bcm!== null) {
+		result = value(parseInt(req.params.item), Math.abs(1-bcm.status));
+	}
 	res.send(JSON.stringify(result));
 };
 
