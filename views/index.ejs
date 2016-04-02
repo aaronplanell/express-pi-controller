@@ -2,41 +2,61 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title><%=title%></title>
-	<link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='icon' href='favicon.ico' type="image/x-icon" />
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
   </head>
+
   <body>
-    <div id="page-wrap">
+  		<div class = "container theme-showcase" role="main">
+  			<br>
+			<header id="header" class="jumbotron" text-align="center">
+		        <h1><%=title%></h1>
+		        <p>A project created with a Raspberry Pi, Node Js, Express, Bootstrap, the OnOff package and a lot of fun</p>
+			</header>
 
-		<header id="h1" text-align="center">
-			··· <%=title%> ···
-		</header>
-		<br>
-		<br>
-		<% if(sStatusLed===true) { %>
-			<% if(status===0) { %>
-			<a onclick="javacript:window.location.reload()" class="redButton">Off <%=ledId%></a>
+			<br>
+			<br>
+			<p>
+			<% if(sStatusLed===true) { %>
+				<% if(status===0) { %>
+				<button onclick="javacript:window.location.reload()" type="button" class="btn btn-lg btn-danger">Off <%=ledId%></button>
+				<% } else { %>
+				<button onclick="javacript:window.location.reload()" type="button" class="btn btn-lg btn-success">On <%=ledId%></button>
+				<% } %>
 			<% } else { %>
-			<a onclick="javacript:window.location.reload()" class="greenButton">On <%=ledId%></a>
-			<% } %>
-		<% } else { %>
-			Sorry, but currently the button is switched off 
-			<br>
-			<br>
-			<a onclick="javacript:window.location.reload()" class="blueButton">Reload</a>
-		<% } %>
+				<button onclick="javacript:window.location.reload()" disabled type="button" class="btn btn-lg ">Reload <%=ledId%></button>
+				<div class="alert alert-danger" role="alert">
+					<strong>Warning!</strong> Sorry, but currently the button is switched off.
+				</div>				
 
-		<br>
-		<br>
-		<br>
-		<footer id="f1" >
-			Aaron Planell
+			<% } %>
+			</p>
+
 			<br>
-			<a href="mailto:aaronplanell@gmail.com">aaronplanell@gmail.com</a>
 			<br>
-			<a href="https://github.com/aaronplanell">https://github.com/aaronplanell</a>
-		</footer>
-    </div>
+			<br>
+			<footer id="footer" class="well">
+				Aaron Planell
+				<br>
+				<a href="mailto:aaronplanell@gmail.com">aaronplanell@gmail.com</a>
+				<br>
+				<a href="https://github.com/aaronplanell">https://github.com/aaronplanell</a>
+			</footer>
+
+		</div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
   </body>
+
 </html>
+
