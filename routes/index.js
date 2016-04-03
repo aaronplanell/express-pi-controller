@@ -23,7 +23,4 @@ router.get("/:type(led)/:item(\\d+)/switch", controller.switch);
 // Get the status of a led
 router.get("/:type(led)/:item(\\d+)/status", controller.status);
 
-// Get a button of the led
-router.get("/:type(led)/:item(\\d+)/button", controller.button);
-
 module.exports = router;

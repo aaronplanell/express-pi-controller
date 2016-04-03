@@ -261,21 +261,3 @@ exports.status = function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
 	res.send(JSON.stringify(curMessage));
 };
-
-// Get a button of the led
-exports.button = function (req, res, next) {
-	disableErrors();
-	var result = false;
-	var bcm = getGpio(parseInt(req.params.item));
-	if( bcm!== null) {
-		if (sStatusLed) {
-			bcm.GPIO.writeSync(Math.abs(1-bcm.status));
-			bcm.status = bcm.GPIO.readSync();
-			console.log(colors.red("The item " + bcm.id + " has this value: " + parseInt(bcm.status)));
-		}
-		res.render('button', { title: 'Button ' + bcm.id, sStatusLed: sStatusLed, bcm: bcm });
-	} else {
-	    res.setHeader('Content-Type', 'application/json');
-		res.send(JSON.stringify(result));
-	}
-}
