@@ -81,7 +81,7 @@
 	},
 	{
 		"id":		17, 
-		"name":		"BCM 17",
+		"name":		"This is the led 17th.",
 		"type":		"led",
 		"enabled":	true,
 		"status":	1,
@@ -89,7 +89,7 @@
 	},
 	{
 		"id":		18, 
-		"name":		"BCM 18",
+		"name":		"This is the led 18th.",
 		"type":		"led",
 		"enabled":	true,
 		"status":	1,

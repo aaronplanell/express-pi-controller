@@ -1,0 +1,28 @@
+[
+	{
+		"id":			0,
+		"enabled":		false,
+		"message":		"The status led is not defined."
+	},
+	{
+		"id":			1,
+		"enabled":		false,
+		"message":		"The button is not defined."
+	},
+	{
+		"id":			2,
+		"enabled":		false,
+		"message":		"The led is not enabled."
+	},
+	{
+		"id":			3,
+		"enabled":		false,
+		"message":		"Cannot on/off the led. Please, press the button and reload."
+	},
+	{
+		"id":			4,
+		"enabled":		false,
+		"message":		"The led is not loaded."
+	}
+]
+	

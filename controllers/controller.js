@@ -2,7 +2,22 @@ var colors = require('colors');
 
 //Load the BCMs
 var bcms = require('../model/bcms.json');
+var errors = require('../model/errors.json');
 
+//The message class
+function message(success, sStatusLed, bcm, errors) {
+    this.success = success;  
+    this.sStatusLed = sStatusLed;
+    this.bcm = bcm;
+    this.errors = errors;
+};
+
+function person(first, last, age, eye) {
+    this.firstName = first;
+    this.lastName = last;
+    this.age = age;
+    this.eyeColor = eye;
+}
 
 /*
  * Prepare de Leds/Button
@@ -43,7 +58,9 @@ var setStatusLed = function () {
 		return(true);
 	}
 	else {
-		console.log(colors.bgRed("Warning: The status led is not defined."));
+		//Warning: The status led is not defined.
+		errors[0].enabled = true;
+		console.log(colors.bgRed(errors[0].message));
 		return(false);
 	}
 };
@@ -60,11 +77,21 @@ var setButton = function () {
 		return(true);
 	}
 	else {
-		console.log(colors.bgRed("Warning: The button is not defined."));
+		//Warning: The button is not defined.
+		errors[1].enabled = true;
+		console.log(colors.bgRed(errors[1].message));
 		return(false);
 	}
 };
 
+/*
+ * Disable errors. 
+ * It's called at the first time of every transaction
+ ***/
+var disableErrors = function () {
+	for (var i=0; i<errors.length; i++)
+		errors[i].enabled = false;
+};
 
 
 /*
@@ -83,7 +110,7 @@ var changeStatusLed = function (err, state) {
 		else {
 			sStatusLed = false;
 			gStatusLed.writeSync(1);
-			console.log(colors.grey("The led " + nStatusLed + " is not active."));
+			console.log(colors.yellow("The led " + nStatusLed + " is not active."));
 		};
 	};
 };
@@ -136,12 +163,17 @@ var getGpio = function(item) {
 var value = function (item, new_status) {
 
 	if (!isEnabled(item)) {
-		console.log(colors.bgRed("Warning: The led " + item + " is not enabled. Someone is trying to hack us!"));
+
+		//Warning: The led is not enabled.
+		errors[2].enabled = true;
+		console.log(colors.bgRed(errors[2].message));
 		return (false);
 	};		
 
 	if (!sStatusLed) {
-		console.log(colors.bgYellow("Warning: Cannot on/off the led " + item + ". Press first the button."));
+		//Warning: Cannot on/off the led. Please, press first the button.
+		errors[3].enabled = true;
+		console.log(colors.bgRed(errors[3].message));
 		return (false);
 	};
 		
@@ -150,9 +182,12 @@ var value = function (item, new_status) {
 	if (bcm !== null) {
 		bcm.GPIO.writeSync(new_status);
 		bcm.status = bcm.GPIO.readSync();
-		console.log(colors.grey("The item " + item + " has this value: " + parseInt(new_status)));
+		console.log(colors.red("The item " + item + " has this value: " + new_status));
 	} else {
-		console.log(colors.bgRed("Warning: The led " + item + " is not loaded. Someone is trying to hack us!"));
+		//Warning: The led is not loaded.
+		errors[4].enabled = true;
+		console.log(colors.bgRed(errors[4].message));
+		return (false);
 	}
 
 	return(true);
@@ -165,15 +200,8 @@ var value = function (item, new_status) {
 
 //Switch the led & Render de main page
 exports.index = function (req, res, next) {
-	var result = false;
-	var item = 18;
-	var bcm = getGpio(parseInt(item));
-	if( bcm!== null) {	
-		var result = value(item, Math.abs(1-bcm.status));
-		res.render('index', { title: 'Express / Raspberry Pi / Controller', sStatusLed: sStatusLed, status: bcm.status, ledId: bcm.id });
-	} else {
-		res.send(JSON.stringify(result));
-	}
+	var leds = bcms.filter(function(item) { return (item.type === "led" && item.enabled === true) });
+	res.render('index', { title: 'Express / Raspberry Pi / Controller', sStatusLed: sStatusLed, leds: leds });
 };
 
 //Return the active items
@@ -185,28 +213,69 @@ exports.enabled = function (req, res, next) {
 //Return one item
 exports.item = function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(bcms.filter(function(item) { return (item.type === req.params.type && item.id === parseInt(req.params.item) && item.enabled === true) })));	
+	var bcm = getGpio(parseInt(req.params.item));
+	if( bcm!== null) {
+	    res.send(JSON.stringify(bcm));	
+	} else {
+		res.send(JSON.stringify(null));
+	}
 };
 
 //Switch on one item
 exports.on = function (req, res, next) {
+	disableErrors();
 	var result = value(parseInt(req.params.item), 0);
-	res.send(JSON.stringify(result));
+	var curMessage = new message(result, sStatusLed, getGpio(parseInt(req.params.item)), errors.filter(function(item) { return (item.enabled === true) }) );
+    res.setHeader('Content-Type', 'application/json');
+	res.send(JSON.stringify(curMessage));
 };
 
 //Switch off one item
 exports.off = function (req, res, next) {
+	disableErrors();
 	var result = value(parseInt(req.params.item), 1);
-	res.send(JSON.stringify(result));
+	var curMessage = new message(result, sStatusLed, getGpio(parseInt(req.params.item)), errors.filter(function(item) { return (item.enabled === true) }) );
+    res.setHeader('Content-Type', 'application/json');
+	res.send(JSON.stringify(curMessage));
 };
 
 //Switch the item
 exports.switch = function (req, res, next) {
+	disableErrors();
 	var result = false;
 	var bcm = getGpio(parseInt(req.params.item));
 	if( bcm!== null) {
 		result = value(parseInt(req.params.item), Math.abs(1-bcm.status));
 	}
-	res.send(JSON.stringify(result));
+
+	var curMessage = new message(result, sStatusLed, getGpio(parseInt(req.params.item)), errors.filter(function(item) { return (item.enabled === true) }) );
+    res.setHeader('Content-Type', 'application/json');
+	res.send(JSON.stringify(curMessage));
 };
 
+// Get the status of a led
+exports.status = function (req, res, next) {
+	disableErrors();
+	var result = true;
+	var curMessage = new message(result, sStatusLed, getGpio(parseInt(req.params.item)), errors.filter(function(item) { return (item.enabled === true) }) );
+    res.setHeader('Content-Type', 'application/json');
+	res.send(JSON.stringify(curMessage));
+};
+
+// Get a button of the led
+exports.button = function (req, res, next) {
+	disableErrors();
+	var result = false;
+	var bcm = getGpio(parseInt(req.params.item));
+	if( bcm!== null) {
+		if (sStatusLed) {
+			bcm.GPIO.writeSync(Math.abs(1-bcm.status));
+			bcm.status = bcm.GPIO.readSync();
+			console.log(colors.red("The item " + bcm.id + " has this value: " + parseInt(bcm.status)));
+		}
+		res.render('button', { title: 'Button ' + bcm.id, sStatusLed: sStatusLed, bcm: bcm });
+	} else {
+	    res.setHeader('Content-Type', 'application/json');
+		res.send(JSON.stringify(result));
+	}
+}

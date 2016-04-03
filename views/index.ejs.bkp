@@ -4,71 +4,29 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- The Title -->
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title><%=title%></title>
 
-    <!-- Bootstrap, the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web -->
+    <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+
   </head>
 
   <body>
   		<div class = "container theme-showcase" role="main">
-
-  			<!-- The header -->
   			<br>
 			<header id="header" class="jumbotron" text-align="center">
 		        <h1><%=title%></h1>
 		        <p>A project created with a Raspberry Pi, Node Js, Express, Bootstrap, the OnOff package and a lot of fun</p>
 			</header>
 
-			<!-- The buttons -->
 			<% for (var i=0; i<leds.length; i++) { %>
-				<p>
-				<% if(sStatusLed===true) { %>
-					<% if(leds[i].status===0) { %>
-					<button 
-						id="button_<%=leds[i].id%>" 
-						onclick="javacript:switchButton(<%=leds[i].id%>);" 
-						type="button" 
-						class="btn btn-lg btn-danger">
-						<%=leds[i].name%>
-					</button>
-					<% } else { %>
-					<button 
-						id="button_<%=leds[i].id%>" 
-						onclick="javacript:switchButton(<%=leds[i].id%>);" 
-						type="button" 
-						class="btn btn-lg btn-success">
-						<%=leds[i].name%>
-					</button>
-					<% } %>
-				<% } else { %>
-				<button 
-					id="<%=leds[i].id%>" 
-					disabled 
-					type="button" 
-					class="btn btn-lg">
-					<%=leds[i].name%>
-				</button>
-				<% } %>
-				</p>
+				<div id="item_<%=leds[i].id%>" >
+				  <iframe src="led/<%=leds[i].id%>/button" frameborder="0" width="100%" height="60" ></iframe>
+				</div>				
 			<% } %>
 
-			<!-- The alert box -->
-			<p>
-				<% 
-					var alertDisplay = "display:block";
-					if(sStatusLed===true) alertDisplay = "display:none";
-				%>
-				<div id="alert" class="alert alert-danger" role="alert" style="<%=alertDisplay%>">
-					<strong>Warning!</strong> Cannot on/off the led. Please, press the button and reload.
-				</div>
-			</p>
-
-			<!-- The footer -->
-			<br>
 			<footer id="footer" class="well">
 				<p><strong>About me</strong></p>
 				<p>
@@ -85,18 +43,12 @@
 
 		</div>
 
-		<div id="id01"></div>
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="http://code.jquery.com/jquery.js"></script>
 
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-
-    <!-- The library express-pi-controller for this page -->
-    <script src="javascript/express-pi-controller.js"></script>
-   	
-  </body> 
+  </body>
 
 </html>
 
